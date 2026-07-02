@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\build\Ozon.Route256.Practice.LogisticsSimulator.props" />
-</Project>

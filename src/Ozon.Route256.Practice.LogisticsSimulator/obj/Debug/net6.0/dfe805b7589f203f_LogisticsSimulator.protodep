@@ -1,3 +1,0 @@
-obj\Debug\net6.0\Proto/LogisticsSimulator.cs \
-obj\Debug\net6.0\Proto/LogisticsSimulatorGrpc.cs: C:/Users/Administrator/.nuget/packages/grpc.tools/2.51.0/build/native/include/google/protobuf/wrappers.proto\
- Proto/LogisticsSimulator.proto

@@ -1,8 +1,0 @@
-C:\Users\Administrator\RiderProjects\homework-1\src\Practice.CustomerService\obj\Debug\net8.0\Practice.CustomerService.csproj.AssemblyReference.cache
-C:\Users\Administrator\RiderProjects\homework-1\src\Practice.CustomerService\obj\Debug\net8.0\Practice.CustomerService.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Administrator\RiderProjects\homework-1\src\Practice.CustomerService\obj\Debug\net8.0\Practice.CustomerService.AssemblyInfoInputs.cache
-C:\Users\Administrator\RiderProjects\homework-1\src\Practice.CustomerService\obj\Debug\net8.0\Practice.CustomerService.AssemblyInfo.cs
-C:\Users\Administrator\RiderProjects\homework-1\src\Practice.CustomerService\obj\Debug\net8.0\Practice.CustomerService.csproj.CoreCompileInputs.cache
-C:\Users\Administrator\RiderProjects\homework-1\src\Practice.CustomerService\obj\Debug\net8.0\Practice.CustomerService.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\Administrator\RiderProjects\homework-1\src\Practice.CustomerService\obj\Debug\net8.0\Practice.CustomerService.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\Administrator\RiderProjects\homework-1\src\Practice.CustomerService\obj\Debug\net8.0\Practice.CustomerService.sourcelink.json

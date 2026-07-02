@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "LogisticsPlatform.LogisticsSimulator": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7132;http://localhost:5238",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "LogisticsPlatform.ServiceDiscovery": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7134;http://localhost:5000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "LOGISTICS_DB_STATE": "cluster:0-9:db1:1543;cluster:10-20:db2:1543;cluster1:0:db3:1543",
+        "LOGISTICS_UPDATE_TIMEOUT": "10"
+      }
+    }
+  }
+}

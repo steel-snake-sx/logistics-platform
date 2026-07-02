@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\build\Ozon.Route256.Practice.CustomerService1.props" />
-</Project>

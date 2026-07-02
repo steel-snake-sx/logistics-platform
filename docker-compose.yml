@@ -4,7 +4,7 @@ services:
   
   customer-service:
     build:
-      context: ./src/Ozon.Route256.Practice.CustomerService
+      context: ./src/LogisticsPlatform.CustomerService
       dockerfile: Dockerfile
     depends_on:
       - customer-service-db
@@ -12,11 +12,11 @@ services:
     ports:
       - "5081:8080"
     environment:
-      ROUTE256_SD_ADDRESS: "http://service-discovery:8080"
+      LOGISTICS_SD_ADDRESS: "http://service-discovery:8080"
       ASPNETCORE_ENVIRONMENT: "Development"
       ASPNETCORE_URLS: "http://+:8080"
-      ROUTE256_GRPC_PORT: "8080"
-      ROUTE256_HTTP_PORT: "8081"
+      LOGISTICS_GRPC_PORT: "8080"
+      LOGISTICS_HTTP_PORT: "8081"
 
   customer-service-db:
     image: postgres:latest
@@ -37,7 +37,7 @@ services:
   
   orders-generator-web:
     build:
-      context: ./src/Ozon.Route256.Practice.OrdersGenerator
+      context: ./src/LogisticsPlatform.OrdersGenerator
       dockerfile: Dockerfile
     container_name: orders-generator-web
     depends_on:
@@ -46,14 +46,14 @@ services:
       broker-2:
         condition: service_healthy
     environment:
-      ROUTE256_ORDER_SOURCE: "WebSite"
-      ROUTE256_KAFKA_BROKERS: "broker-1:9091,broker-2:9092"
-      ROUTE256_ORDER_REQUEST_TOPIC: "pre_orders"
-      ROUTE256_CUSTOMER_ADDRESS: "http://customer-service:8080"
+      LOGISTICS_ORDER_SOURCE: "WebSite"
+      LOGISTICS_KAFKA_BROKERS: "broker-1:9091,broker-2:9092"
+      LOGISTICS_ORDER_REQUEST_TOPIC: "pre_orders"
+      LOGISTICS_CUSTOMER_ADDRESS: "http://customer-service:8080"
 
   orders-generator-mobile:
     build:
-      context: ./src/Ozon.Route256.Practice.OrdersGenerator
+      context: ./src/LogisticsPlatform.OrdersGenerator
       dockerfile: Dockerfile
     container_name: orders-generator-mobile
     depends_on:
@@ -62,13 +62,13 @@ services:
       broker-2:
         condition: service_healthy
     environment:
-      ROUTE256_ORDER_SOURCE: "Mobile"
-      ROUTE256_KAFKA_BROKERS: "broker-1:9091,broker-2:9092"
-      ROUTE256_ORDER_REQUEST_TOPIC: "pre_orders"
+      LOGISTICS_ORDER_SOURCE: "Mobile"
+      LOGISTICS_KAFKA_BROKERS: "broker-1:9091,broker-2:9092"
+      LOGISTICS_ORDER_REQUEST_TOPIC: "pre_orders"
 
   orders-generator-api:
     build:
-      context: ./src/Ozon.Route256.Practice.OrdersGenerator
+      context: ./src/LogisticsPlatform.OrdersGenerator
       dockerfile: Dockerfile
     container_name: orders-generator-api
     depends_on:
@@ -77,24 +77,24 @@ services:
       broker-2:
         condition: service_healthy
     environment:
-      ROUTE256_ORDER_SOURCE: "Api"
-      ROUTE256_KAFKA_BROKERS: "broker-1:9091,broker-2:9092"
-      ROUTE256_ORDER_REQUEST_TOPIC: "pre_orders"
+      LOGISTICS_ORDER_SOURCE: "Api"
+      LOGISTICS_KAFKA_BROKERS: "broker-1:9091,broker-2:9092"
+      LOGISTICS_ORDER_REQUEST_TOPIC: "pre_orders"
 
   service-discovery:
     build:
-      context: ./src/Ozon.Route256.Practice.ServiceDiscovery
+      context: ./src/LogisticsPlatform.ServiceDiscovery
       dockerfile: Dockerfile
     container_name: service-discovery
     environment:
-      ROUTE256_DB_STATE: "cluster:0-9:db1:1543;cluster:10-19:db2:1543;cluster1:0:db3:1543"
-      ROUTE256_UPDATE_TIMEOUT: "10"
+      LOGISTICS_DB_STATE: "cluster:0-9:db1:1543;cluster:10-19:db2:1543;cluster1:0:db3:1543"
+      LOGISTICS_UPDATE_TIMEOUT: "10"
     ports:
       - "5500:8080"
   
   logistic-simulator:
     build:
-      context: ./src/Ozon.Route256.Practice.LogisticsSimulator
+      context: ./src/LogisticsPlatform.LogisticsSimulator
       dockerfile: Dockerfile
     container_name: logistic-simulator
 

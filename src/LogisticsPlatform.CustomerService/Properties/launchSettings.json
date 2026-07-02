@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "applicationUrl": "http://localhost:5065",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "LOGISTICS_GRPC_PORT" : "5005",
+        "LOGISTICS_HTTP_PORT" : "5004",
+        "LOGISTICS_SD_ADDRESS" : "http://localhost:5500"
+      }
+    }
+  }
+}

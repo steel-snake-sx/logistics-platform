@@ -1,3 +1,0 @@
-obj\Debug\net8.0\Protos/Sd.cs \
-obj\Debug\net8.0\Protos/SdGrpc.cs: C:/Users/Administrator/.nuget/packages/grpc.tools/2.71.0/build/native/include/google/protobuf/timestamp.proto\
- Protos/sd.proto
