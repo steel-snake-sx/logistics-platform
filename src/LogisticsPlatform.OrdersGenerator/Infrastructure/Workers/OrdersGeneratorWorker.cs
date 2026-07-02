@@ -50,9 +50,7 @@ public class OrdersGeneratorWorker : BackgroundService
         }
         catch (Exception e)
         {
-            _logger.LogInformation(
-                "OrdersGeneratorWorker failed.", 
-                e.Message);
+            _logger.LogError(e, "OrdersGeneratorWorker failed.");
         }
     }
 
