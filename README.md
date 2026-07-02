@@ -1,81 +1,113 @@
-# Logistics Platform
+# 🛠 Logistics Platform – Production-like Microservices System
 
-Logistics Platform is a local microservice playground for order generation, customer data, service discovery, and logistics simulation. The system runs with Docker Compose and uses gRPC, Kafka, and PostgreSQL.
+Этот репозиторий содержит **production-like** решение с микросервисной архитектурой. Все сервисы запускаются через `docker-compose`, используют **gRPC**, **Kafka**, **PostgreSQL**, симуляторы нагрузки и Service Discovery.
 
-## Services
+## 📦 Архитектура
 
-| Service | Purpose |
-| --- | --- |
-| `customer-service` | gRPC API for customer data |
-| `orders-generator-web` | Order generator for website traffic |
-| `orders-generator-mobile` | Order generator for mobile traffic |
-| `orders-generator-api` | Order generator for API traffic |
-| `service-discovery` | Provides database cluster resources to services |
-| `logistic-simulator` | Simulates logistics order state changes |
-| `broker-1`, `broker-2` | Kafka brokers |
-| `customer-service-db` | PostgreSQL database |
+Проект включает **4 микросервиса**, а также необходимые инфраструктурные компоненты:
 
-## Requirements
+| Компонент               | Назначение                                   |
+|-------------------------|----------------------------------------------|
+| `customer-service`      | gRPC-сервис для работы с клиентами           |
+| `orders-generator-*`    | Генераторы заказов (Web, Mobile, API)        |
+| `service-discovery`     | Service Discovery (распределение кластеров)  |
+| `logistic-simulator`    | Симулятор логистики                          |
+| `Kafka (broker-1/2)`    | Очереди сообщений                            |
+| `Zookeeper`             | Координация Kafka-брокеров                   |
+| `PostgreSQL`            | Хранилище данных клиентов                    |
 
-- Docker
-- Docker Compose
-- .NET 8 SDK for local development without Docker
+Все сервисы взаимодействуют через **gRPC** или **Kafka**, используют общие `.proto`-контракты и работают в локальной среде, имитируя продакшн.
 
-## Quick Start
+## 🚀 Быстрый старт
 
-```bash
-docker compose up --build
-```
+> ⚠️ Требования: Docker и Docker Compose установлены.
 
-Useful endpoints after startup:
-
-- `http://localhost:5081` - customer service gRPC endpoint
-- `http://localhost:5500` - service discovery HTTP endpoint
-- `localhost:29091`, `localhost:29092` - Kafka brokers
-- `localhost:5400` - PostgreSQL (`test` / `test`)
-
-Stop the stack:
+### 1. Клонируйте репозиторий
 
 ```bash
-docker compose down
+git clone https://github.com/your-username/logistics-platform.git
+cd logistics-platform
 ```
 
-## Configuration
+### 2. Запустите систему
 
-The services are configured with environment variables in `docker-compose.yml`.
+```bash
+docker-compose up --build
+```
 
-| Variable | Description |
-| --- | --- |
-| `LOGISTICS_SD_ADDRESS` | Service discovery gRPC address |
-| `LOGISTICS_GRPC_PORT` | gRPC port exposed by a service |
-| `LOGISTICS_HTTP_PORT` | HTTP port exposed by a service |
-| `LOGISTICS_ORDER_SOURCE` | Order source name for a generator |
-| `LOGISTICS_KAFKA_BROKERS` | Kafka bootstrap servers |
-| `LOGISTICS_ORDER_REQUEST_TOPIC` | Kafka topic for generated orders |
-| `LOGISTICS_CUSTOMER_ADDRESS` | Customer service gRPC address |
-| `LOGISTICS_DB_STATE` | Database cluster mapping for service discovery |
-| `LOGISTICS_UPDATE_TIMEOUT` | Service discovery update interval in seconds |
+> Используйте `--build`, чтобы пересобрать образы при изменении кода.
 
-## Project Structure
+### 3. Проверка
+
+После запуска:
+
+* `http://localhost:5081` — gRPC endpoint `customer-service`
+* `http://localhost:5500` — Service Discovery HTTP
+* Kafka доступна на портах `29091` и `29092`
+* PostgreSQL на порту `5400` (`user=test, password=test`)
+
+Все сервисы стартуют с healthcheck'ами и полностью готовы к работе.
+
+## 🧩 Технологии
+
+* [.NET 8 / C# 12](https://learn.microsoft.com/en-us/dotnet/)
+* [gRPC](https://grpc.io/)
+* [Apache Kafka](https://kafka.apache.org/)
+* [Docker Compose](https://docs.docker.com/compose/)
+* [PostgreSQL](https://www.postgresql.org/)
+* [Zookeeper](https://zookeeper.apache.org/)
+* Clean Architecture подход (по слоям)
+
+## 🔧 Структура каталогов
 
 ```text
 src/
-  LogisticsPlatform.CustomerService/
-  LogisticsPlatform.OrdersGenerator/
-  LogisticsPlatform.ServiceDiscovery/
-  LogisticsPlatform.LogisticsSimulator/
+├── LogisticsPlatform.CustomerService
+├── LogisticsPlatform.OrdersGenerator
+├── LogisticsPlatform.ServiceDiscovery
+├── LogisticsPlatform.LogisticsSimulator
 ```
 
-## Development
+Каждый сервис содержит `Dockerfile`, настройки и слой инфраструктуры, необходимые для автономного запуска.
 
-Build the solution locally:
+## ⚙️ Конфигурация
+
+Основные переменные окружения задаются в `docker-compose.yml`:
+
+| Переменная | Назначение |
+|------------|------------|
+| `LOGISTICS_SD_ADDRESS` | Адрес Service Discovery |
+| `LOGISTICS_GRPC_PORT` | gRPC-порт сервиса |
+| `LOGISTICS_HTTP_PORT` | HTTP-порт сервиса |
+| `LOGISTICS_ORDER_SOURCE` | Источник заказов (`WebSite`, `Mobile`, `Api`) |
+| `LOGISTICS_KAFKA_BROKERS` | Список Kafka-брокеров |
+| `LOGISTICS_ORDER_REQUEST_TOPIC` | Kafka topic для новых заказов |
+| `LOGISTICS_CUSTOMER_ADDRESS` | Адрес Customer Service |
+| `LOGISTICS_DB_STATE` | Описание кластеров для Service Discovery |
+| `LOGISTICS_UPDATE_TIMEOUT` | Интервал обновления данных Service Discovery |
+
+## 🧪 Тестирование
+
+Проект включает генерацию заказов через три источника (`WebSite`, `Mobile`, `Api`), которые публикуют сообщения в Kafka. `customer-service` обрабатывает запросы через gRPC. Поведение системы можно наблюдать через логи контейнеров.
+
+Для локальной проверки без Docker можно собрать solution:
 
 ```bash
 dotnet build LogisticsPlatform.sln
 ```
 
-The repository intentionally ignores IDE caches and build artifacts such as `.vs/`, `.idea/`, `bin/`, and `obj/`.
+## 🧼 Завершение работы
 
-## License
+```bash
+docker-compose down
+```
 
-MIT License. See `LICENSE` for details.
+Если нужно освободить место:
+
+```bash
+docker system prune -a
+```
+
+## 📎 Лицензия
+
+MIT License. Подробнее см. `LICENSE`.

@@ -1,4 +1,4 @@
-version: "3.9"
+name: logistics-platform
 
 services:
   
@@ -65,6 +65,7 @@ services:
       LOGISTICS_ORDER_SOURCE: "Mobile"
       LOGISTICS_KAFKA_BROKERS: "broker-1:9091,broker-2:9092"
       LOGISTICS_ORDER_REQUEST_TOPIC: "pre_orders"
+      LOGISTICS_CUSTOMER_ADDRESS: "http://customer-service:8080"
 
   orders-generator-api:
     build:
@@ -80,6 +81,7 @@ services:
       LOGISTICS_ORDER_SOURCE: "Api"
       LOGISTICS_KAFKA_BROKERS: "broker-1:9091,broker-2:9092"
       LOGISTICS_ORDER_REQUEST_TOPIC: "pre_orders"
+      LOGISTICS_CUSTOMER_ADDRESS: "http://customer-service:8080"
 
   service-discovery:
     build:
