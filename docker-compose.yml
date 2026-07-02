@@ -19,7 +19,7 @@ services:
       LOGISTICS_HTTP_PORT: "8081"
 
   customer-service-db:
-    image: postgres:latest
+    image: postgres:16-alpine
     container_name: customer-service-db
     environment:
       POSTGRES_DB: "customer-service"

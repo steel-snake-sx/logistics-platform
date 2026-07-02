@@ -2,21 +2,46 @@
 
 Этот репозиторий содержит **production-like** решение с микросервисной архитектурой. Все сервисы запускаются через `docker-compose`, используют **gRPC**, **Kafka**, **PostgreSQL**, симуляторы нагрузки и Service Discovery.
 
+## 🎯 Что демонстрирует проект
+
+* декомпозицию backend-системы на несколько сервисов;
+* gRPC-взаимодействие между сервисами;
+* асинхронную обработку заказов через Kafka;
+* локальную инфраструктуру через Docker Compose;
+* PostgreSQL как persistent storage;
+* healthchecks и запуск всей системы одной командой;
+* конфигурацию через environment variables.
+
 ## 📦 Архитектура
 
 Проект включает **4 микросервиса**, а также необходимые инфраструктурные компоненты:
 
-| Компонент               | Назначение                                   |
-|-------------------------|----------------------------------------------|
-| `customer-service`      | gRPC-сервис для работы с клиентами           |
-| `orders-generator-*`    | Генераторы заказов (Web, Mobile, API)        |
-| `service-discovery`     | Service Discovery (распределение кластеров)  |
-| `logistic-simulator`    | Симулятор логистики                          |
-| `Kafka (broker-1/2)`    | Очереди сообщений                            |
-| `Zookeeper`             | Координация Kafka-брокеров                   |
-| `PostgreSQL`            | Хранилище данных клиентов                    |
+| Компонент | Назначение |
+|---|---|
+| `customer-service` | gRPC-сервис для работы с клиентами |
+| `orders-generator-*` | Генераторы заказов: Web, Mobile, API |
+| `service-discovery` | Service Discovery для распределения кластеров |
+| `logistic-simulator` | Симулятор логистики |
+| `Kafka (broker-1/2)` | Очередь сообщений |
+| `Zookeeper` | Координация Kafka-брокеров |
+| `PostgreSQL` | Хранилище данных клиентов |
 
 Все сервисы взаимодействуют через **gRPC** или **Kafka**, используют общие `.proto`-контракты и работают в локальной среде, имитируя продакшн.
+
+```mermaid
+flowchart LR
+    Web[orders-generator-web] --> Kafka[(Kafka)]
+    Mobile[orders-generator-mobile] --> Kafka
+    Api[orders-generator-api] --> Kafka
+
+    Web --> Customer[customer-service]
+    Mobile --> Customer
+    Api --> Customer
+
+    Customer --> Postgres[(PostgreSQL)]
+    Customer --> SD[service-discovery]
+    Simulator[logistic-simulator] --> Kafka
+```
 
 ## 🚀 Быстрый старт
 
@@ -25,7 +50,7 @@
 ### 1. Клонируйте репозиторий
 
 ```bash
-git clone https://github.com/your-username/logistics-platform.git
+git clone https://github.com/steel-snake-sx/logistics-platform.git
 cd logistics-platform
 ```
 
@@ -45,6 +70,8 @@ docker-compose up --build
 * `http://localhost:5500` — Service Discovery HTTP
 * Kafka доступна на портах `29091` и `29092`
 * PostgreSQL на порту `5400` (`user=test, password=test`)
+
+> Credentials в `docker-compose.yml` предназначены только для локального demo/development запуска.
 
 Все сервисы стартуют с healthcheck'ами и полностью готовы к работе.
 
@@ -75,7 +102,7 @@ src/
 Основные переменные окружения задаются в `docker-compose.yml`:
 
 | Переменная | Назначение |
-|------------|------------|
+|---|---|
 | `LOGISTICS_SD_ADDRESS` | Адрес Service Discovery |
 | `LOGISTICS_GRPC_PORT` | gRPC-порт сервиса |
 | `LOGISTICS_HTTP_PORT` | HTTP-порт сервиса |
@@ -96,6 +123,18 @@ src/
 dotnet build LogisticsPlatform.sln
 ```
 
+## ⚠️ Ограничения
+
+Проект является учебно-портфельной симуляцией и не претендует на production-ready систему.
+
+Что намеренно упрощено:
+
+* нет полноценной авторизации;
+* нет observability-стека вроде Prometheus/Grafana;
+* нет CI/CD pipeline;
+* credentials используются только для локального запуска;
+* бизнес-логика симуляционная.
+
 ## 🧼 Завершение работы
 
 ```bash
@@ -105,7 +144,7 @@ docker-compose down
 Если нужно освободить место:
 
 ```bash
-docker system prune -a
+docker-compose down -v --remove-orphans
 ```
 
 ## 📎 Лицензия
